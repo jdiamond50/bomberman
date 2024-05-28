@@ -1,4 +1,4 @@
-public class Block implements Asset {
+public class Block implements Asset, Barrier {
   PImage blockImage;
   int x;
   int y;

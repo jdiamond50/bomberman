@@ -48,19 +48,23 @@ public class Player implements Asset {
       }
       if (keyCode == DOWN) {
         y += 0.05;
-        if (grid[(int) x][(int) (y + 0.95)] instanceof Block || grid[(int) (x + 0.95)][(int) (y + 0.95)] instanceof Block) {
+        if (grid[(int) x][(int) (y + 1)] instanceof Block || grid[(int) (x + 0.95)][(int) (y + 1)] instanceof Block) {
           y -= 0.05;
         }
       }
       if (keyCode == LEFT) {
         x -= 0.05;
-        if (grid[(int) x][(int) y] instanceof Block || grid[(int) x][(int) y + 1] instanceof Block) {
+        if (grid[(int) x][(int) y] instanceof Block || grid[(int) x][(int) (y + 0.95)] instanceof Block) {
            x += 0.05;
         }
       }
       if (keyCode == RIGHT) {
         x += 0.05;
+<<<<<<< HEAD
         if (grid[(int) x + 1][(int) y] instanceof Block || grid[(int) x + 1][(int) y + 1] instanceof Block) {
+=======
+        if (grid[(int) x + 1][(int) y] instanceof Block || grid[(int) x + 1][(int) (y + 0.95)] instanceof Block) {
+>>>>>>> b4a15e7bf5b3b4bcade24dff9258439c7ddc5a63
            x -= 0.05;
         }
       }
