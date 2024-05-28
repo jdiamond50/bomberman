@@ -61,7 +61,7 @@ public class Player implements Asset {
       if (keyCode == RIGHT) {
         x += 0.05;
         if (grid[(int) x + 1][(int) y] instanceof Block || grid[(int) x + 1][(int) y + 1] instanceof Block) {
-           x -= 0.05
+           x -= 0.05;
         }
       }
     }
@@ -69,6 +69,37 @@ public class Player implements Asset {
     x = constrain(x, 0, width - player.width);
     y = constrain(y, 0, height - player.height);
   }
+  
+  boolean up,down,left,right;
+  void keyPressed() {
+    if (keyCode == UP) {
+      up = true;
+    }
+    if (keyCode == DOWN) {
+      down = true;
+    }
+    if (keyCode == LEFT) {
+      left = true;
+    }
+    if (keyCode == RIGHT) {
+      right = true;
+    }
+  }
+  void keyReleased() {
+    if (keyCode == UP) {
+      up = true;
+    }
+    if (keyCode == DOWN) {
+      down = true;
+    }
+    if (keyCode == LEFT) {
+      left = true;
+    }
+    if (keyCode == RIGHT) {
+      right = true;
+    }
+  }
+    
   
   void display() {
     image(player, x, y);
