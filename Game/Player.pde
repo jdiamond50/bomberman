@@ -42,26 +42,25 @@ public class Player implements Asset {
     if (keyPressed) {
       if (keyCode == UP) {
         y -= 0.05;
-        if (grid[(int) x][(int) y] instanceof Block || grid[(int) (x + 0.95)][(int) y] instanceof Block) {
+      if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
           y += 0.05;
         }
       }
       if (keyCode == DOWN) {
         y += 0.05;
-        if (grid[(int) x][(int) (y + 1)] instanceof Block || grid[(int) (x + 0.95)][(int) (y + 1)] instanceof Block) {
-          y -= 0.05;
+      if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {y -= 0.05;
         }
       }
       if (keyCode == LEFT) {
         x -= 0.05;
-        if (grid[(int) x][(int) y] instanceof Block || grid[(int) x][(int) (y + 0.95)] instanceof Block) {
-           x += 0.05;
+        if (grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier) {
+          x += 0.05;
         }
       }
       if (keyCode == RIGHT) {
         x += 0.05;
-        if (grid[(int) x + 1][(int) y] instanceof Block || grid[(int) x + 1][(int) (y + 0.95)] instanceof Block) {
-           x -= 0.05;
+        if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
+          x -= 0.05;
         }
       }
     }

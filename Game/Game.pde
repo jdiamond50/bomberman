@@ -1,6 +1,6 @@
 Player player;
 //ArrayList<Enemy> enemies;
-//ArrayList<Bomb> bombs;
+ArrayList<Bomb> bombs;
 Asset[][] grid;
 int rows = 15;
 int cols = 15;
@@ -21,7 +21,9 @@ void setup() {
   grid[7][10] = new Block(7,10);
 
   //enemies = new ArrayList<>();
-  //bombs = new ArrayList<>();
+  bombs = new ArrayList<>(); 
+  bombs.add(new Bomb(8,11));
+  
 }
 
 void draw() {
