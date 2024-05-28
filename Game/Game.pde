@@ -16,6 +16,8 @@ void setup() {
   grid[5][5] = player;
   grid[10][10] = new Block(10,10);
   grid[10][11] = new Block(10,11);
+  grid[8][10] = new Block(8,10);
+  grid[8][11] = new Block (8,11);
 
   //enemies = new ArrayList<>();
   //bombs = new ArrayList<>();
