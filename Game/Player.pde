@@ -7,6 +7,7 @@ public class Player implements Asset {
   ArrayList<Bomb> bombs;
   Asset[][] grid;
   boolean up,down,left,right;
+  boolean bombJustDropped;
   
   public Player(float x, float y) {
     this.x = x;
@@ -17,6 +18,7 @@ public class Player implements Asset {
     score = 0;
     bombs = new ArrayList<Bomb>();
     up = down = left = right = false;
+    bombJustDropped = false;
   }
   
   float getX() {
@@ -43,15 +45,22 @@ public class Player implements Asset {
   int getScore() {
     return score;
   }
+  boolean onBomb() {
+     return grid[(int) x][(int) y] instanceof Bomb || grid[(int) x + 1][(int) y] instanceof Bomb || grid[(int) x][(int) y + 1] instanceof Bomb || grid[(int) x + 1][(int) y + 1] instanceof Bomb;
+  }
   
   void dropBomb() {
     if (keyPressed && keyCode == SHIFT && bombs.size() == 0)
     {
        bombs.add(new Bomb((int) (x + 0.5),(int) (y + 0.5)));
     }
+    bombJustDropped = true;
   }
   
   void move() {
+    if (!onBomb()) {
+       bombJustDropped = false; 
+    }
     if (up) {
       y -= 0.05;
       if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
@@ -60,7 +69,8 @@ public class Player implements Asset {
     }
     if (down) {
       y += 0.05;
-    if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {y -= 0.05;
+      if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {
+        y -= 0.05;
       }
     }
     if (left) {
