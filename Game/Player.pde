@@ -6,6 +6,7 @@ public class Player implements Asset {
   int score;
   ArrayList<Bomb> bombs;
   Asset[][] grid;
+  boolean up,down,left,right;
   
   public Player(float x, float y) {
     this.x = x;
@@ -15,6 +16,7 @@ public class Player implements Asset {
     powerUps = "";
     score = 0;
     bombs = new ArrayList<Bomb>();
+    up = down = left = right = false;
   }
   
   float getX() {
@@ -52,27 +54,26 @@ public class Player implements Asset {
   void move() {
     if (keyPressed) {
       if (keyCode == UP) {
+        y -= 0.05;
         if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
           y += 0.05;
         }
-        y -= 0.05;
       }
       if (keyCode == DOWN) {
         y += 0.05;
-        if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {
-          y -= 0.05;
+      if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {y -= 0.05;
         }
       }
       if (keyCode == LEFT) {
         x -= 0.05;
         if (grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier) {
-           x += 0.05;
+          x += 0.05;
         }
       }
       if (keyCode == RIGHT) {
         x += 0.05;
         if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
-           x -= 0.05;
+          x -= 0.05;
         }
       }
     }
@@ -80,6 +81,36 @@ public class Player implements Asset {
     x = constrain(x, 0, width - player.width);
     y = constrain(y, 0, height - player.height);
   }
+  
+  void keyPressed() {
+    if (keyCode == UP) {
+      up = true;
+    }
+    if (keyCode == DOWN) {
+      down = true;
+    }
+    if (keyCode == LEFT) {
+      left = true;
+    }
+    if (keyCode == RIGHT) {
+      right = true;
+    }
+  }
+  void keyReleased() {
+    if (keyCode == UP) {
+      up = false;
+    }
+    if (keyCode == DOWN) {
+      down = false;
+    }
+    if (keyCode == LEFT) {
+      left = false;
+    }
+    if (keyCode == RIGHT) {
+      right = false;
+    }
+  }
+    
   
   void display() {
     image(player, x, y);

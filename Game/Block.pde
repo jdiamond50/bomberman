@@ -8,7 +8,7 @@ public class Block implements Asset, Barrier {
      y = ycor;
      blockImage = loadImage("environment.png");
      blockImage.resize(240,125);
-     blockImage = blockImage.get(163,46,15,15);
+     blockImage = blockImage.get(147,30,15,15); //breakable block is (163,46,15,15)
      blockImage.resize(50,50);
   }
   

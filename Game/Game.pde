@@ -1,16 +1,21 @@
 Player player;
 //ArrayList<Enemy> enemies;
 Asset[][] grid;
-int rows = 15;
-int cols = 15;
+int rows = 24;
+int cols = 16;
 
 void setup() {
   size(1200,800);
   grid = new Asset[rows][cols];
-  player = new Player(5,5);
-  grid[10][10] = new Block(10,10);
-  grid[10][11] = new Block(10,11);
-  grid[8][10] = new Block(8,10);
+  grid[5][5] = player;
+  for (int i = 0; i < grid.length; i++) {
+    for (int j = 0; j < grid[0].length; j++) {
+      if (i == 0 || i == rows -1 || j == 0 || j == cols -1) {
+        grid[i][j] = new Block(i, j);
+      }
+    }
+  }
+  grid[9][10] = new BreakableBlock(9, 10);
 
   //enemies = new ArrayList<>();
 }
@@ -42,4 +47,11 @@ void draw() {
          }
       }
    }
+}
+
+void keyPressed() {
+  player.keyPressed();
+}
+void keyReleased() {
+  player.keyReleased();
 }
