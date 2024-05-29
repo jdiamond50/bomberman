@@ -4,6 +4,7 @@ public class Player implements Asset {
   float y;
   String powerUps;
   int score;
+  ArrayList<Bomb> bombs;
   Asset[][] grid;
   
   public Player(float x, float y) {
@@ -13,6 +14,7 @@ public class Player implements Asset {
     player.resize(50, 50);
     powerUps = "";
     score = 0;
+    bombs = new ArrayList<Bomb>();
   }
   
   float getX() {
@@ -33,18 +35,27 @@ public class Player implements Asset {
   PImage getImage() {
     return player;
   }
-  
+  ArrayList<Bomb> getBombs() {
+     return bombs; 
+  }
   int getScore() {
     return score;
+  }
+  
+  void dropBomb() {
+    if (keyPressed && keyCode == SHIFT && bombs.size() == 0)
+    {
+       bombs.add(new Bomb((int) (x + 0.5),(int) (y + 0.5)));
+    }
   }
   
   void move() {
     if (keyPressed) {
       if (keyCode == UP) {
-        y -= 0.05;
         if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
           y += 0.05;
         }
+        y -= 0.05;
       }
       if (keyCode == DOWN) {
         y += 0.05;

@@ -15,4 +15,16 @@ public class Bomb implements Asset, Barrier {
   PImage getImage() {
      return bombImage; 
   }
+  float getTime() {
+     return timeLeft; 
+  }
+  void tick() {
+    timeLeft -= 0.015;
+  }
+  int getX() {
+    return x;
+  }
+  int getY() {
+    return y; 
+  }
 }
