@@ -72,7 +72,7 @@ public class Player implements Asset {
     if (right) {
       x += 0.05;
       if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
-        x -= 0.05;
+        x -= 0.05;  
       }
     }
     

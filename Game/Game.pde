@@ -15,7 +15,15 @@ void setup() {
       }
     }
   }
-  grid[9][10] = new BreakableBlock(9, 10);
+  for (int x = 1; x < grid.length-2; x++) {
+    for (int y = 1; y < grid[0].length-2; y++) {
+      if (x % 2 == 0 || y % 2 == 0) {
+        grid[x][y] = new Block(x, y);
+      }
+    }
+  }
+  //grid[9][10] = new BreakableBlock(9, 10);
+  //grid[11][10] = new BreakableBlock(11, 10);
 
   //enemies = new ArrayList<>();
 }
