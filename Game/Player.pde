@@ -5,6 +5,7 @@ public class Player implements Asset {
   String powerUps;
   int score;
   Asset[][] grid;
+  boolean up,down,left,right;
   
   public Player(float x, float y) {
     this.x = x;
@@ -13,6 +14,7 @@ public class Player implements Asset {
     player.resize(50, 50);
     powerUps = "";
     score = 0;
+    up = down = left = right = false;
   }
   
   float getX() {
@@ -39,34 +41,28 @@ public class Player implements Asset {
   }
   
   void move() {
-    if (keyPressed) {
-      if (keyCode == UP) {
-        y -= 0.05;
-        if (grid[(int) x][(int) y] instanceof Block || grid[(int) (x + 0.95)][(int) y] instanceof Block) {
-          y += 0.05;
-        }
-      }
-      if (keyCode == DOWN) {
+    if (up) {
+      y -= 0.05;
+      if (grid[(int) x][(int) y] instanceof Block || grid[(int) (x + 0.95)][(int) y] instanceof Block) {
         y += 0.05;
-        if (grid[(int) x][(int) (y + 1)] instanceof Block || grid[(int) (x + 0.95)][(int) (y + 1)] instanceof Block) {
-          y -= 0.05;
-        }
       }
-      if (keyCode == LEFT) {
-        x -= 0.05;
-        if (grid[(int) x][(int) y] instanceof Block || grid[(int) x][(int) (y + 0.95)] instanceof Block) {
-           x += 0.05;
-        }
+    }
+    if (down) {
+      y += 0.05;
+      if (grid[(int) x][(int) (y + 1)] instanceof Block || grid[(int) (x + 0.95)][(int) (y + 1)] instanceof Block) {
+        y -= 0.05;
       }
-      if (keyCode == RIGHT) {
-        x += 0.05;
-<<<<<<< HEAD
-        if (grid[(int) x + 1][(int) y] instanceof Block || grid[(int) x + 1][(int) y + 1] instanceof Block) {
-=======
-        if (grid[(int) x + 1][(int) y] instanceof Block || grid[(int) x + 1][(int) (y + 0.95)] instanceof Block) {
->>>>>>> b4a15e7bf5b3b4bcade24dff9258439c7ddc5a63
-           x -= 0.05;
-        }
+    }
+    if (left) {
+      x -= 0.05;
+      if (grid[(int) x][(int) y] instanceof Block || grid[(int) x][(int) (y + 0.95)] instanceof Block) {
+         x += 0.05;
+      }
+    }
+    if (right) {
+      x += 0.05;
+      if (grid[(int) x + 1][(int) y] instanceof Block || grid[(int) x + 1][(int) (y + 0.95)] instanceof Block) {
+         x -= 0.05;
       }
     }
     
@@ -74,7 +70,6 @@ public class Player implements Asset {
     y = constrain(y, 0, height - player.height);
   }
   
-  boolean up,down,left,right;
   void keyPressed() {
     if (keyCode == UP) {
       up = true;
@@ -91,16 +86,16 @@ public class Player implements Asset {
   }
   void keyReleased() {
     if (keyCode == UP) {
-      up = true;
+      up = false;
     }
     if (keyCode == DOWN) {
-      down = true;
+      down = false;
     }
     if (keyCode == LEFT) {
-      left = true;
+      left = false;
     }
     if (keyCode == RIGHT) {
-      right = true;
+      right = false;
     }
   }
     
