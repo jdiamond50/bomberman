@@ -4,6 +4,7 @@ public class Player implements Asset {
   float y;
   String powerUps;
   int score;
+  ArrayList<Bomb> bombs;
   Asset[][] grid;
   boolean up,down,left,right;
   
@@ -14,6 +15,7 @@ public class Player implements Asset {
     player.resize(50, 50);
     powerUps = "";
     score = 0;
+    bombs = new ArrayList<Bomb>();
     up = down = left = right = false;
   }
   
@@ -35,34 +37,42 @@ public class Player implements Asset {
   PImage getImage() {
     return player;
   }
-  
+  ArrayList<Bomb> getBombs() {
+     return bombs; 
+  }
   int getScore() {
     return score;
+  }
+  
+  void dropBomb() {
+    if (keyPressed && keyCode == SHIFT && bombs.size() == 0)
+    {
+       bombs.add(new Bomb((int) (x + 0.5),(int) (y + 0.5)));
+    }
   }
   
   void move() {
     if (up) {
       y -= 0.05;
-      if (grid[(int) x][(int) y] instanceof Block || grid[(int) (x + 0.95)][(int) y] instanceof Block) {
+      if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
         y += 0.05;
       }
     }
     if (down) {
       y += 0.05;
-      if (grid[(int) x][(int) (y + 1)] instanceof Block || grid[(int) (x + 0.95)][(int) (y + 1)] instanceof Block) {
-        y -= 0.05;
+    if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {y -= 0.05;
       }
     }
     if (left) {
       x -= 0.05;
-      if (grid[(int) x][(int) y] instanceof Block || grid[(int) x][(int) (y + 0.95)] instanceof Block) {
-         x += 0.05;
+      if (grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier) {
+        x += 0.05;
       }
     }
     if (right) {
       x += 0.05;
-      if (grid[(int) x + 1][(int) y] instanceof Block || grid[(int) x + 1][(int) (y + 0.95)] instanceof Block) {
-         x -= 0.05;
+      if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
+        x -= 0.05;
       }
     }
     
