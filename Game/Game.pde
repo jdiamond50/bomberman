@@ -7,7 +7,7 @@ int cols = 16;
 void setup() {
   size(1200,800);
   grid = new Asset[rows][cols];
-  grid[5][5] = player;
+  player = new Player(5,5);
   for (int i = 0; i < grid.length; i++) {
     for (int j = 0; j < grid[0].length; j++) {
       if (i == 0 || i == rows -1 || j == 0 || j == cols -1) {
