@@ -65,24 +65,44 @@ public class Player implements Asset {
       y -= 0.05;
       if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
         y += 0.05;
+        if (bombJustDropped) {
+          if (!(grid[(int) (x + 0.55)][(int) y] instanceof Block) && !(grid[(int) (x + 0.95)][(int) y] instanceof Block)) {
+            y -= 0.05; 
+          }
+        }
       }
     }
     if (down) {
       y += 0.05;
       if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {
         y -= 0.05;
+        if (bombJustDropped) {
+          if (!(grid[(int) (x + 0.05)][(int) y + 1] instanceof Block) && !(grid[(int) (x + 0.95)][(int) y + 1] instanceof Block)) {
+            y += 0.05;
+          }
+        }
       }
     }
     if (left) {
       x -= 0.05;
       if (grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier) {
         x += 0.05;
+        if (bombJustDropped) {
+          if (!(grid[(int) x][(int) (y + 0.05)] instanceof Block) && !(grid[(int) x][(int) (y + 0.95)] instanceof Block)) {
+             x -= 0.05; 
+          }
+        }
       }
     }
     if (right) {
       x += 0.05;
       if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
         x -= 0.05;
+        if (bombJustDropped) {
+           if (!(grid[(int) x + 1][(int) (y + 0.05)] instanceof Block) && !(grid[(int) x + 1][(int) (y + 0.95)] instanceof Block)) {
+              x += 0.05; 
+           }
+        }
       }
     }
     
