@@ -5,6 +5,7 @@ public class Player implements Asset {
   String powerUps;
   int score;
   Asset[][] grid;
+  boolean up,down,left,right;
   
   public Player(float x, float y) {
     this.x = x;
@@ -13,6 +14,7 @@ public class Player implements Asset {
     player.resize(50, 50);
     powerUps = "";
     score = 0;
+    up = down = left = right = false;
   }
   
   float getX() {
@@ -68,6 +70,36 @@ public class Player implements Asset {
     x = constrain(x, 0, width - player.width);
     y = constrain(y, 0, height - player.height);
   }
+  
+  void keyPressed() {
+    if (keyCode == UP) {
+      up = true;
+    }
+    if (keyCode == DOWN) {
+      down = true;
+    }
+    if (keyCode == LEFT) {
+      left = true;
+    }
+    if (keyCode == RIGHT) {
+      right = true;
+    }
+  }
+  void keyReleased() {
+    if (keyCode == UP) {
+      up = false;
+    }
+    if (keyCode == DOWN) {
+      down = false;
+    }
+    if (keyCode == LEFT) {
+      left = false;
+    }
+    if (keyCode == RIGHT) {
+      right = false;
+    }
+  }
+    
   
   void display() {
     image(player, x, y);
