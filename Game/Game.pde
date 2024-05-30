@@ -3,6 +3,7 @@ Player player;
 Asset[][] grid;
 int rows = 25;
 int cols = 17;
+float blockDensity = 0.8;
 
 void setup() {
   size(1250,850);
@@ -25,7 +26,7 @@ void setup() {
   for (int a = 1; a < grid.length-1; a++) {
     for (int b = 1; b < grid[0].length-1; b++) {
       if (!(grid[a][b] instanceof Block)) {
-        if (Math.random() > 0.8) {
+        if (Math.random() > blockDensity) {
           grid[a][b] = new BreakableBlock(a, b);
         }
       }
@@ -49,7 +50,6 @@ void draw() {
         bomb.tick();
         if (bomb.getTime() <= 0) {
           detonate(bomb.getX(), bomb.getY(), 1);
-          grid[bomb.getX()][bomb.getY()] = null;
           player.getBombs().remove(i); 
         }
      }
@@ -58,6 +58,16 @@ void draw() {
       for (int c = 0; c < grid[0].length; c++) {
          try {
            image(grid[r][c].getImage(), r * 50, c * 50);
+           if (grid[r][c] instanceof Explosion) {
+             try {
+               grid[r][c].tick();
+               if (grid[r][c].getTime() <= 0) {
+                  grid[r][c] = null; 
+               }
+             } catch (Exception e) {
+               
+             }
+           }
          } catch (Exception e) {
            
          }
@@ -73,28 +83,41 @@ void keyReleased() {
 }
 
 void detonate(int x, int y, int str ) {
+  grid[x][y] = new Explosion("mid");
   for (int r = x + 1; r < x + str + 1; r++) {
      if (grid[r][y] instanceof BreakableBlock) {
-        grid[r][y] = null;
+        grid[r][y] = new Explosion("right");
         break;
+     }
+     if (r == x + str) {
+       grid[r][y] = new Explosion("right");
      }
   }
   for (int r = x - 1; r > x - str - 1; r--) {
      if (grid[r][y] instanceof BreakableBlock) {
-        grid[r][y] = null;
+        grid[r][y] = new Explosion("left");
         break;
+     }
+     if (r == x - str) {
+        grid[r][y] = new Explosion("left");
      }
   }
   for (int c = y + 1; c < y + str + 1; c++) {
      if (grid[x][c] instanceof BreakableBlock) {
-        grid[x][c] = null;
+        grid[x][c] = new Explosion("bottom");
         break;
+     }
+     if (c == y + str) {
+        grid[x][c] = new Explosion("bottom"); 
      }
   }
   for (int c = y - 1; c > y - str- 1; c--) {
      if (grid[x][c] instanceof BreakableBlock) {
-        grid[x][c] = null;
+        grid[x][c] = new Explosion("top");
         break;
+     }
+     if (c == y - str) {
+        grid[x][c] = new Explosion("top"); 
      }
   }
 }

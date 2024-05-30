@@ -1,8 +1,8 @@
 public class Bomb implements Asset, Barrier {
-  PImage bombImage;
-  int x;
-  int y;
-  float timeLeft;
+  private PImage bombImage;
+  private int x;
+  private int y;
+  private float timeLeft;
   
   Bomb(int x, int y) {
      this.x = x;
