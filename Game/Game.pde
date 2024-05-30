@@ -1,11 +1,11 @@
 Player player;
 //ArrayList<Enemy> enemies;
 Asset[][] grid;
-int rows = 24;
-int cols = 16;
+int rows = 25;
+int cols = 17;
 
 void setup() {
-  size(1200,800);
+  size(1250,850);
   grid = new Asset[rows][cols];
   player = new Player(5,5);
   for (int i = 0; i < grid.length; i++) {
@@ -15,7 +15,22 @@ void setup() {
       }
     }
   }
-  grid[9][10] = new BreakableBlock(9, 10);
+  for (int x = 1; x < grid.length-2; x++) {
+    for (int y = 1; y < grid[0].length-1; y++) {
+      if (x % 2 == 0 && y % 2 == 0) {
+        grid[x][y] = new Block(x, y);
+      }
+    }
+  }
+  for (int a = 1; a < grid.length-1; a++) {
+    for (int b = 1; b < grid[0].length-1; b++) {
+      if (!(grid[a][b] instanceof Block)) {
+        if (Math.random() > 0.8) {
+          grid[a][b] = new BreakableBlock(a, b);
+        }
+      }
+    }
+  }
 
   //enemies = new ArrayList<>();
 }
