@@ -24,7 +24,7 @@ void setup() {
   }
   for (int a = 1; a < grid.length-1; a++) {
     for (int b = 1; b < grid[0].length-1; b++) {
-      if (!(grid[a][b] instanceof Block)) {
+      if (!(grid[a][b] instanceof Block) && !(grid[a][b] instanceof Player)) {
         if (Math.random() > 0.8) {
           grid[a][b] = new BreakableBlock(a, b);
         }
