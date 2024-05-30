@@ -48,8 +48,9 @@ void draw() {
         grid[bomb.getX()][bomb.getY()] = bomb;
         bomb.tick();
         if (bomb.getTime() <= 0) {
-           grid[bomb.getX()][bomb.getY()] = null;
-           player.getBombs().remove(i); 
+          detonate(bomb.getX(), bomb.getY(), 1);
+          grid[bomb.getX()][bomb.getY()] = null;
+          player.getBombs().remove(i); 
         }
      }
    }
@@ -69,4 +70,31 @@ void keyPressed() {
 }
 void keyReleased() {
   player.keyReleased();
+}
+
+void detonate(int x, int y, int str ) {
+  for (int r = x + 1; r < x + str + 1; r++) {
+     if (grid[r][y] instanceof BreakableBlock) {
+        grid[r][y] = null;
+        break;
+     }
+  }
+  for (int r = x - 1; r > x - str - 1; r--) {
+     if (grid[r][y] instanceof BreakableBlock) {
+        grid[r][y] = null;
+        break;
+     }
+  }
+  for (int c = y + 1; c < y + str + 1; c++) {
+     if (grid[x][c] instanceof BreakableBlock) {
+        grid[x][c] = null;
+        break;
+     }
+  }
+  for (int c = y - 1; c > y - str- 1; c--) {
+     if (grid[x][c] instanceof BreakableBlock) {
+        grid[x][c] = null;
+        break;
+     }
+  }
 }

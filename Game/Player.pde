@@ -103,7 +103,6 @@ public class Player implements Asset {
               x += 0.05; 
            }
         }
-        x -= 0.05;  
       }
     }
     
