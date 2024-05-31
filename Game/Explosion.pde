@@ -7,14 +7,18 @@ public class Explosion implements Asset {
     timeLeft = 0.5;
     if (type.equals("mid")) {
        explosionImage = explosionImage.get(379,512,16,16);
-    } else if (type.equals("left")) {
-       explosionImage = explosionImage.get(311,478,16,16);
-    } else if (type.equals("right")) {
-      explosionImage = explosionImage.get(294,546,16,16);  
-    } else if (type.equals("top")) {
+    } else if (type.equals("leftEnd")) {
+       explosionImage = explosionImage.get(266,323,16,16);
+    } else if (type.equals("rightEnd")) {
+      explosionImage = explosionImage.get(232,374,16,16);  
+    } else if (type.equals("topEnd")) {
       explosionImage = explosionImage.get(379,495,16,16);
-    } else if (type.equals("bottom")) {
+    } else if (type.equals("bottomEnd")) {
       explosionImage = explosionImage.get(379,546,16,16); 
+    } else if (type.equals("vertical")) {
+      explosionImage = explosionImage.get(317,374,16,16);
+    } else if (type.equals("horizontal")) {
+      explosionImage = explosionImage.get(215,357,16,16);  
     }
     explosionImage.resize(50,50);
   }

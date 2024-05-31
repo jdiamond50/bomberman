@@ -37,7 +37,7 @@ void setup() {
 }
 
 void draw() {
-   background(46,139,0);
+   background(0,126,41);
    player.updateGrid(grid);
    player.move();
    player.dropBomb();
@@ -86,38 +86,58 @@ void detonate(int x, int y, int str ) {
   grid[x][y] = new Explosion("mid");
   for (int r = x + 1; r < x + str + 1; r++) {
      if (grid[r][y] instanceof BreakableBlock) {
-        grid[r][y] = new Explosion("right");
+        grid[r][y] = new Explosion("rightEnd");
         break;
      }
+     if (grid[r][y] instanceof Block) {
+        break; 
+     }
      if (r == x + str) {
-       grid[r][y] = new Explosion("right");
+       grid[r][y] = new Explosion("rightEnd");
+     } else {
+       grid[r][y] = new Explosion("horizontal");
      }
   }
   for (int r = x - 1; r > x - str - 1; r--) {
      if (grid[r][y] instanceof BreakableBlock) {
-        grid[r][y] = new Explosion("left");
+        grid[r][y] = new Explosion("leftEnd");
         break;
      }
+     if (grid[r][y] instanceof Block) {
+        break; 
+     }
      if (r == x - str) {
-        grid[r][y] = new Explosion("left");
+        grid[r][y] = new Explosion("leftEnd");
+     } else {
+       grid[r][y] = new Explosion("horizontal");
      }
   }
   for (int c = y + 1; c < y + str + 1; c++) {
      if (grid[x][c] instanceof BreakableBlock) {
-        grid[x][c] = new Explosion("bottom");
+        grid[x][c] = new Explosion("bottomEnd");
+        break;
+     }
+     if (grid[x][c] instanceof Block) {
         break;
      }
      if (c == y + str) {
-        grid[x][c] = new Explosion("bottom"); 
+        grid[x][c] = new Explosion("bottomEnd"); 
+     } else {
+       grid[x][c] = new Explosion("vertical");
      }
   }
   for (int c = y - 1; c > y - str- 1; c--) {
      if (grid[x][c] instanceof BreakableBlock) {
-        grid[x][c] = new Explosion("top");
+        grid[x][c] = new Explosion("topEnd");
+        break;
+     }
+     if (grid[x][c] instanceof Block) {
         break;
      }
      if (c == y - str) {
-        grid[x][c] = new Explosion("top"); 
+        grid[x][c] = new Explosion("topEnd"); 
+     } else {
+       grid[x][c] = new Explosion("vertical");
      }
   }
 }
