@@ -1,13 +1,13 @@
 public class Player implements Asset {
-  PImage player;
-  float x;
-  float y;
-  String powerUps;
-  int score;
-  ArrayList<Bomb> bombs;
-  Asset[][] grid;
-  boolean up,down,left,right;
-  boolean bombJustDropped;
+  private PImage player;
+  private float x;
+  private float y;
+  private String powerUps;
+  private int score;
+  private ArrayList<Bomb> bombs;
+  private Asset[][] grid;
+  private boolean up,down,left,right;
+  private boolean bombJustDropped;
   
   public Player(float x, float y) {
     this.x = x;
@@ -48,6 +48,9 @@ public class Player implements Asset {
   boolean onBomb() {
      return grid[(int) x][(int) y] instanceof Bomb || grid[(int) x + 1][(int) y] instanceof Bomb || grid[(int) x][(int) y + 1] instanceof Bomb || grid[(int) x + 1][(int) y + 1] instanceof Bomb;
   }
+  float getTime() {return 0.0;}
+  public void tick() {}
+
   
   void dropBomb() {
     if (keyPressed && keyCode == SHIFT && bombs.size() == 0)
