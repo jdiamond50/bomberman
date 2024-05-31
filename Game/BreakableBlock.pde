@@ -1,5 +1,5 @@
 public class BreakableBlock extends Block {
-  PImage breakableBlock;
+  private PImage breakableBlock;
   
   public BreakableBlock(int xVal, int yVal) {
     super(xVal, yVal);
@@ -11,9 +11,5 @@ public class BreakableBlock extends Block {
   
   PImage getImage() {
      return breakableBlock; 
-  }
-  
-  void display() {
-    image(breakableBlock, x, y);
   }
 }

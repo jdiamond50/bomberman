@@ -1,7 +1,7 @@
 public class Block implements Asset, Barrier {
-  PImage blockImage;
-  int x;
-  int y;
+  private PImage blockImage;
+  private int x;
+  private int y;
   
   public Block(int xcor, int ycor) {
      x = xcor;
@@ -21,6 +21,8 @@ public class Block implements Asset, Barrier {
   PImage getImage() {
      return blockImage; 
   }
+  float getTime() {return 0.0;}
+  public void tick() {}
   
   void display() {
     image(blockImage, x, y);

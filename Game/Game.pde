@@ -3,6 +3,7 @@ Player player;
 Asset[][] grid;
 int rows = 25;
 int cols = 17;
+float blockDensity = 0.8;
 
 void setup() {
   size(1250,850);
@@ -24,8 +25,8 @@ void setup() {
   }
   for (int a = 1; a < grid.length-1; a++) {
     for (int b = 1; b < grid[0].length-1; b++) {
-      if (!(grid[a][b] instanceof Block) && !(grid[a][b] instanceof Player)) {
-        if (Math.random() > 0.8) {
+      if (!(grid[a][b] instanceof Block)) {
+        if (Math.random() > blockDensity) {
           grid[a][b] = new BreakableBlock(a, b);
         }
       }
@@ -36,7 +37,7 @@ void setup() {
 }
 
 void draw() {
-   background(46,139,0);
+   background(0,126,41);
    player.updateGrid(grid);
    player.move();
    player.dropBomb();
@@ -48,8 +49,8 @@ void draw() {
         grid[bomb.getX()][bomb.getY()] = bomb;
         bomb.tick();
         if (bomb.getTime() <= 0) {
-           grid[bomb.getX()][bomb.getY()] = null;
-           player.getBombs().remove(i); 
+          detonate(bomb.getX(), bomb.getY(), 1);
+          player.getBombs().remove(i); 
         }
      }
    }
@@ -57,6 +58,16 @@ void draw() {
       for (int c = 0; c < grid[0].length; c++) {
          try {
            image(grid[r][c].getImage(), r * 50, c * 50);
+           if (grid[r][c] instanceof Explosion) {
+             try {
+               grid[r][c].tick();
+               if (grid[r][c].getTime() <= 0) {
+                  grid[r][c] = null; 
+               }
+             } catch (Exception e) {
+               
+             }
+           }
          } catch (Exception e) {
            
          }
@@ -69,4 +80,64 @@ void keyPressed() {
 }
 void keyReleased() {
   player.keyReleased();
+}
+
+void detonate(int x, int y, int str ) {
+  grid[x][y] = new Explosion("mid");
+  for (int r = x + 1; r < x + str + 1; r++) {
+     if (grid[r][y] instanceof BreakableBlock) {
+        grid[r][y] = new Explosion("rightEnd");
+        break;
+     }
+     if (grid[r][y] instanceof Block) {
+        break; 
+     }
+     if (r == x + str) {
+       grid[r][y] = new Explosion("rightEnd");
+     } else {
+       grid[r][y] = new Explosion("horizontal");
+     }
+  }
+  for (int r = x - 1; r > x - str - 1; r--) {
+     if (grid[r][y] instanceof BreakableBlock) {
+        grid[r][y] = new Explosion("leftEnd");
+        break;
+     }
+     if (grid[r][y] instanceof Block) {
+        break; 
+     }
+     if (r == x - str) {
+        grid[r][y] = new Explosion("leftEnd");
+     } else {
+       grid[r][y] = new Explosion("horizontal");
+     }
+  }
+  for (int c = y + 1; c < y + str + 1; c++) {
+     if (grid[x][c] instanceof BreakableBlock) {
+        grid[x][c] = new Explosion("bottomEnd");
+        break;
+     }
+     if (grid[x][c] instanceof Block) {
+        break;
+     }
+     if (c == y + str) {
+        grid[x][c] = new Explosion("bottomEnd"); 
+     } else {
+       grid[x][c] = new Explosion("vertical");
+     }
+  }
+  for (int c = y - 1; c > y - str- 1; c--) {
+     if (grid[x][c] instanceof BreakableBlock) {
+        grid[x][c] = new Explosion("topEnd");
+        break;
+     }
+     if (grid[x][c] instanceof Block) {
+        break;
+     }
+     if (c == y - str) {
+        grid[x][c] = new Explosion("topEnd"); 
+     } else {
+       grid[x][c] = new Explosion("vertical");
+     }
+  }
 }
