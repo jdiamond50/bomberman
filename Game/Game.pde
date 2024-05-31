@@ -4,11 +4,13 @@ Asset[][] grid;
 int rows = 25;
 int cols = 17;
 float blockDensity = 0.8;
+int pixelsPerSquare = 50;
 
 void setup() {
   size(1250,850);
   grid = new Asset[rows][cols];
   player = new Player(5,5);
+  // fills border with blocks
   for (int i = 0; i < grid.length; i++) {
     for (int j = 0; j < grid[0].length; j++) {
       if (i == 0 || i == rows -1 || j == 0 || j == cols -1) {
@@ -16,6 +18,7 @@ void setup() {
       }
     }
   }
+  // fills middle with blocks
   for (int x = 1; x < grid.length-2; x++) {
     for (int y = 1; y < grid[0].length-1; y++) {
       if (x % 2 == 0 && y % 2 == 0) {
@@ -23,16 +26,22 @@ void setup() {
       }
     }
   }
+  // fills with breakable blocks
   for (int a = 1; a < grid.length-1; a++) {
     for (int b = 1; b < grid[0].length-1; b++) {
       if (!(grid[a][b] instanceof Block)) {
         if (Math.random() > blockDensity) {
-          grid[a][b] = new BreakableBlock(a, b);
+          grid[a][b] = new BreakableBlock(a, b, false);
         }
       }
     }
   }
-
+  // places exit in one breakable block
+  int r = (int) (Math.random() * rows);
+  int c = (int) (Math.random() * cols);
+  if (grid[r][c] instanceof BreakableBlock) {
+    grid[r][c] = new BreakableBlock(r, c, true); 
+  }
   //enemies = new ArrayList<>();
 }
 
@@ -41,7 +50,7 @@ void draw() {
    player.updateGrid(grid);
    player.move();
    player.dropBomb();
-   image(player.getImage(), player.getX() * 50, player.getY() * 50); 
+   image(player.getImage(), player.getX() * pixelsPerSquare, player.getY() * pixelsPerSquare); 
    for (int i = 0; i < player.getBombs().size(); i++) {
      Bomb bomb = player.getBombs().get(i);
      if (bomb.getTime() > 0) {
@@ -57,7 +66,7 @@ void draw() {
    for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[0].length; c++) {
          try {
-           image(grid[r][c].getImage(), r * 50, c * 50);
+           image(grid[r][c].getImage(), r * pixelsPerSquare, c * pixelsPerSquare);
            if (grid[r][c] instanceof Explosion) {
              try {
                grid[r][c].tick();
