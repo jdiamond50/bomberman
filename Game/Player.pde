@@ -50,6 +50,9 @@ public class Player implements Asset {
   }
   float getTime() {return 0.0;}
   public void tick() {}
+  boolean hasExit() {
+    return false;
+  }
 
   
   void dropBomb() {

@@ -33,4 +33,7 @@ public class Explosion implements Asset {
   void tick() {
     timeLeft -= 0.015;
   }
+  boolean hasExit() {
+    return false;
+  }
 }
