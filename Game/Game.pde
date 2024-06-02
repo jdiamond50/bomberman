@@ -1,5 +1,5 @@
 Player player;
-//ArrayList<Enemy> enemies;
+ArrayList<Enemy> enemies;
 Asset[][] grid;
 int rows = 25;
 int cols = 17;
@@ -32,8 +32,16 @@ void setup() {
       }
     }
   }
-
-  //enemies = new ArrayList<>();
+  enemies = new ArrayList<>();
+  for (int i = 0; i < 5; i++) {
+    int randX = (int) (Math.random() * 22 +1);
+    int randY = (int) (Math.random() * 14 + 1);
+    while (grid[randX][randY] instanceof Block || grid[randX][randY] instanceof BreakableBlock) {
+      randX = (int) (Math.random() * 22 +1);
+      randY = (int) (Math.random() * 14 + 1);
+    }
+    enemies.add(new Enemy(randX, randY, 1));
+  }
 }
 
 void draw() {
@@ -72,6 +80,11 @@ void draw() {
            
          }
       }
+   }
+   for (Enemy enemy: enemies) {
+     enemy.display();
+     enemy.updateGrid(grid);
+     enemy.move();
    }
 }
 
