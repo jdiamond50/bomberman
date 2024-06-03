@@ -45,7 +45,6 @@ void setup() {
       grid[r][c] = new BreakableBlock(r, c, true); 
       blockPlaced = true;
     }
-    System.out.println("loop excecuted\nr = " + r + "; c = " + c);
   }
 }
   //enemies = new ArrayList<>();
