@@ -27,4 +27,8 @@ public class Block implements Asset, Barrier {
   void display() {
     image(blockImage, x, y);
   }
+  
+  boolean hasExit() {
+    return false;
+  }
 }
