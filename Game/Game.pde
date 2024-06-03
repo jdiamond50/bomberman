@@ -66,7 +66,10 @@ void draw() {
    player.dropBomb();
    image(player.getImage(), player.getX() * pixelsPerSquare, player.getY() * pixelsPerSquare); 
    if (player.onExit()) {
-      noLoop();
+      noLoop(); // <------------------------------
+   }
+   if (onExplosion(player)) {
+     noLoop(); // <------------------------------
    }
    for (int i = 0; i < player.getBombs().size(); i++) {
      Bomb bomb = player.getBombs().get(i);
@@ -75,7 +78,7 @@ void draw() {
         grid[bomb.getX()][bomb.getY()] = bomb;
         bomb.tick();
         if (bomb.getTime() <= 0) {
-          detonate(bomb.getX(), bomb.getY(), 1);
+          detonate(bomb.getX(), bomb.getY(), 3);
           player.getBombs().remove(i); 
         }
      }
@@ -99,18 +102,29 @@ void draw() {
          }
       }
    }
-   for (Enemy enemy: enemies) {
+   for (int i = 0; i < enemies.size(); i++) {
+     Enemy enemy = enemies.get(i);
      enemy.display();
      enemy.updateGrid(grid);
      enemy.move();
      if (playerOnEnemy(player, enemy)) {
        noLoop(); 
      }
+     if (onExplosion(enemy)) {
+       enemies.remove(enemy); 
+       i--;
+     }
    }
 }
 
 boolean playerOnEnemy(Player p, Enemy e) {
   return (p.getX() < (e.getX() + 1) && (p.getX() + 1) > e.getX()) && (p.getY() < (e.getY() + 1) && (p.getY() + 1) > e.getY());
+}
+boolean onExplosion(Enemy e) {
+  return (grid[(int) (e.getX() + 0.1)][(int) (e.getY() + 0.1)] instanceof Explosion) || (grid[(int) (e.getX() + 0.1)][(int) (e.getY() + 0.9)] instanceof Explosion) || (grid[(int) (e.getX() + 0.9)][(int) (e.getY() + 0.1)] instanceof Explosion) || (grid[(int) (e.getX() + 0.9)][(int) (e.getY() + 0.9)] instanceof Explosion);
+}
+boolean onExplosion(Player e) {
+  return (grid[(int) (e.getX() + 0.1)][(int) (e.getY() + 0.1)] instanceof Explosion) || (grid[(int) (e.getX() + 0.1)][(int) (e.getY() + 0.9)] instanceof Explosion) || (grid[(int) (e.getX() + 0.9)][(int) (e.getY() + 0.1)] instanceof Explosion) || (grid[(int) (e.getX() + 0.9)][(int) (e.getY() + 0.9)] instanceof Explosion);
 }
 
 void keyPressed() {
