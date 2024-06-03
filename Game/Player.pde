@@ -48,8 +48,14 @@ public class Player implements Asset {
   boolean onBomb() {
      return grid[(int) x][(int) y] instanceof Bomb || grid[(int) x + 1][(int) y] instanceof Bomb || grid[(int) x][(int) y + 1] instanceof Bomb || grid[(int) x + 1][(int) y + 1] instanceof Bomb;
   }
+  boolean onExit() {
+    return grid[(int) x][(int) y] instanceof Exit || grid[(int) x + 1][(int) y] instanceof Exit || grid[(int) x][(int) y + 1] instanceof Exit || grid[(int) x + 1][(int) y + 1] instanceof Exit;
+  }
   float getTime() {return 0.0;}
   public void tick() {}
+  boolean hasExit() {
+    return false;
+  }
 
   
   void dropBomb() {
