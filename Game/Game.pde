@@ -56,6 +56,9 @@ void draw() {
    player.move();
    player.dropBomb();
    image(player.getImage(), player.getX() * pixelsPerSquare, player.getY() * pixelsPerSquare); 
+   if (player.onExit()) {
+      noLoop();
+   }
    for (int i = 0; i < player.getBombs().size(); i++) {
      Bomb bomb = player.getBombs().get(i);
      if (bomb.getTime() > 0) {
@@ -63,7 +66,7 @@ void draw() {
         grid[bomb.getX()][bomb.getY()] = bomb;
         bomb.tick();
         if (bomb.getTime() <= 0) {
-          detonate(bomb.getX(), bomb.getY(), 3);
+          detonate(bomb.getX(), bomb.getY(), 1);
           player.getBombs().remove(i); 
         }
      }
