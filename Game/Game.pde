@@ -72,7 +72,7 @@ void setup() {
           continue; 
         }
       }
-      grid[r][c] = new BreakableBlock(r, c, true, "f");
+      grid[r][c] = new BreakableBlock(r, c, false, "f");
       usedCoords.add(coords);
       blockPlaced = true;
     }
@@ -89,7 +89,7 @@ void setup() {
           continue; 
         }
       }
-      grid[r][c] = new BreakableBlock(r, c, true, "b");
+      grid[r][c] = new BreakableBlock(r, c, false, "b");
       usedCoords.add(coords);
       blockPlaced = true;
     }
@@ -107,6 +107,10 @@ void draw() {
    if (onExplosion(player)) {
      noLoop(); // <------------------------------
    }
+   if (player.onPowerUp()) {
+     player.addPowerUp(grid[(int) (player.getX() + 0.5)][(int) (player.getY() + 0.5)].getType());
+     grid[(int) (player.getX() + 0.5)][(int) (player.getY() + 0.5)] = null;
+   }
    for (int i = 0; i < player.getBombs().size(); i++) {
      Bomb bomb = player.getBombs().get(i);
      if (bomb.getTime() > 0) {
@@ -114,8 +118,8 @@ void draw() {
         grid[bomb.getX()][bomb.getY()] = bomb;
         bomb.tick();
         if (bomb.getTime() <= 0) {
-          detonate(bomb.getX(), bomb.getY(), 1);
           player.getBombs().remove(i); 
+          detonate(bomb.getX(), bomb.getY(), player.getBombRadius());
         }
      }
    }
@@ -171,13 +175,15 @@ void keyReleased() {
   player.keyReleased();
 }
 
-void detonate(int x, int y, int str ) {
+void detonate(int x, int y, int strength ) {
   grid[x][y] = new Explosion("mid");
-  for (int r = x + 1; r < x + str + 1; r++) {
+  for (int r = x + 1; r < x + strength + 1; r++) {
      if (grid[r][y] instanceof BreakableBlock) {
         if (grid[r][y].hasExit()) {
           grid[r][y] = new Exit(r, y);
           image(grid[r][y].getImage(), r * pixelsPerSquare, y * pixelsPerSquare);
+        } else if (grid[r][y].getPowerUps().length() > 0) {
+          grid[r][y] = new PowerUp(grid[r][y].getPowerUps());
         } else {
           grid[r][y] = new Explosion("rightEnd");
         }
@@ -186,17 +192,24 @@ void detonate(int x, int y, int str ) {
      if (grid[r][y] instanceof Block) {
         break; 
      }
-     if (r == x + str) {
+     if (grid[r][y] instanceof Bomb) {
+       detonate(r, y, player.getBombRadius());
+       System.out.println("detonated bomb");
+       player.clearBombs();
+     }
+     if (r == x + strength) {
        grid[r][y] = new Explosion("rightEnd");
      } else {
        grid[r][y] = new Explosion("horizontal");
      }
   }
-  for (int r = x - 1; r > x - str - 1; r--) {
+  for (int r = x - 1; r > x - strength - 1; r--) {
      if (grid[r][y] instanceof BreakableBlock) {
        if (grid[r][y].hasExit()) {
           grid[r][y] = new Exit(r, y);
           image(grid[r][y].getImage(), r * pixelsPerSquare, y * pixelsPerSquare);
+        } else if (grid[r][y].getPowerUps().length() > 0) {
+          grid[r][y] = new PowerUp(grid[r][y].getPowerUps());
         } else {
           grid[r][y] = new Explosion("leftEnd");
         }
@@ -205,17 +218,24 @@ void detonate(int x, int y, int str ) {
      if (grid[r][y] instanceof Block) {
         break; 
      }
-     if (r == x - str) {
+     if (grid[r][y] instanceof Bomb) {
+       detonate(r, y, player.getBombRadius());
+       System.out.println("detonated bomb");
+       player.clearBombs();
+     }
+     if (r == x - strength) {
         grid[r][y] = new Explosion("leftEnd");
      } else {
        grid[r][y] = new Explosion("horizontal");
      }
   }
-  for (int c = y + 1; c < y + str + 1; c++) {
+  for (int c = y + 1; c < y + strength + 1; c++) {
      if (grid[x][c] instanceof BreakableBlock) {
        if (grid[x][c].hasExit()) {
           grid[x][c] = new Exit(x, c);
           image(grid[x][c].getImage(), x * pixelsPerSquare, c * pixelsPerSquare);
+        } else if (grid[x][c].getPowerUps().length() > 0) {
+          grid[x][c] = new PowerUp(grid[x][c].getPowerUps());
         } else {
           grid[x][c] = new Explosion("bottomEnd");
         }
@@ -224,17 +244,24 @@ void detonate(int x, int y, int str ) {
      if (grid[x][c] instanceof Block) {
         break;
      }
-     if (c == y + str) {
+     if (grid[x][c] instanceof Bomb) {
+       detonate(x, c, player.getBombRadius());
+       System.out.println("detonated bomb");
+       player.clearBombs();
+     }
+     if (c == y + strength) {
         grid[x][c] = new Explosion("bottomEnd"); 
      } else {
        grid[x][c] = new Explosion("vertical");
      }
   }
-  for (int c = y - 1; c > y - str- 1; c--) {
+  for (int c = y - 1; c > y - strength- 1; c--) {
      if (grid[x][c] instanceof BreakableBlock) {
         if (grid[x][c].hasExit()) {
           grid[x][c] = new Exit(x, c);
           image(grid[x][c].getImage(), x * pixelsPerSquare, c * pixelsPerSquare);
+        } else if (grid[x][c].getPowerUps().length() > 0) {
+          grid[x][c] = new PowerUp(grid[x][c].getPowerUps());
         } else {
           grid[x][c] = new Explosion("topEnd");
         }
@@ -243,7 +270,12 @@ void detonate(int x, int y, int str ) {
      if (grid[x][c] instanceof Block) {
         break;
      }
-     if (c == y - str) {
+     if (grid[x][c] instanceof Bomb) {
+       detonate(x, c, player.getBombRadius());
+       System.out.println("detonated bomb");
+       player.clearBombs();
+     }
+     if (c == y - strength) {
         grid[x][c] = new Explosion("topEnd"); 
      } else {
        grid[x][c] = new Explosion("vertical");

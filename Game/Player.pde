@@ -8,6 +8,8 @@ public class Player implements Asset {
   private Asset[][] grid;
   private boolean up,down,left,right;
   private boolean bombJustDropped;
+  private int bombRadius;
+  private int numBombs;
   
   public Player(float x, float y) {
     this.x = x;
@@ -19,6 +21,8 @@ public class Player implements Asset {
     bombs = new ArrayList<Bomb>();
     up = down = left = right = false;
     bombJustDropped = false;
+    bombRadius = 1;
+    numBombs = 1;
   }
   
   float getX() {
@@ -51,17 +55,44 @@ public class Player implements Asset {
   boolean onExit() {
     return grid[(int) (x + 0.1)][(int) (y + 0.1)] instanceof Exit && grid[(int) (x + 0.9)][(int) (y + 0.1)] instanceof Exit && grid[(int) (x + 0.1)][(int) (y + 0.9)] instanceof Exit && grid[(int) (x + 0.9)][(int) (y + 0.9)] instanceof Exit;
   }
+  boolean onPowerUp() {
+    return grid[(int) (x + 0.1)][(int) (y + 0.1)] instanceof PowerUp && grid[(int) (x + 0.9)][(int) (y + 0.1)] instanceof PowerUp && grid[(int) (x + 0.1)][(int) (y + 0.9)] instanceof PowerUp && grid[(int) (x + 0.9)][(int) (y + 0.9)] instanceof PowerUp;
+  }
   float getTime() {return 0.0;}
   public void tick() {}
-  boolean hasExit() {
-    return false;
+  boolean hasExit() {return false;}
+  String getType() {return "";}
+  String getPowerUps () {
+    return powerUps;
+  }
+  void clearBombs() {
+    while (bombs.size() > 0) {
+      bombs.remove(0);
+    }
+  }
+  void addPowerUp(String type) {
+    powerUps += type;
+    //System.out.println("added powerUp: " + type);
+    if (type.equals("f")) {
+      bombRadius += 2;
+    } else if (type.equals("b")) {
+      numBombs++;
+    }
+  }
+  int getBombRadius() {
+    return bombRadius;
+  }
+  int getNumBombs() {
+    return numBombs;
   }
 
   
   void dropBomb() {
-    if (keyPressed && keyCode == SHIFT && bombs.size() == 0)
+    if (keyPressed && keyCode == SHIFT && bombs.size() < numBombs)
     {
-       bombs.add(new Bomb((int) (x + 0.5),(int) (y + 0.5)));
+      if (!(grid[(int) (x + 0.5)][(int) (y + 0.5)] instanceof Bomb)) {
+        bombs.add(new Bomb((int) (x + 0.5),(int) (y + 0.5)));
+      }
     }
     bombJustDropped = true;
   }
