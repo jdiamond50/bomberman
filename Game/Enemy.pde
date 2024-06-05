@@ -44,32 +44,54 @@ public class Enemy {
   }
   
   void move() {
+    boolean deadEnd = false;
+    int deadEndTime = 0;
+    if (deadEnd) {
+      deadEndTime++;
+      if (deadEndTime >= 60) {
+        deadEnd = false;
+        deadEndTime = 0;
+        if (!(grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier)) {
+          direction = 1;
+        } else if (!(grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier)) {
+          direction = 2;
+        } else if (!(grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier)) {
+          direction = 3;
+        } else if (!(grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier)) {
+          direction = 4;
+        }
+      }
+    }
+    
     if (direction == 1) {
       y -= 0.03;
       if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
         y += 0.03;
-        direction += (int) (Math.random() * 3 +1);
+        deadEnd = true;
+        
       }
     }
     if (direction == 2) {
       y += 0.03;
       if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {
         y -= 0.03;
-        direction += (int) (Math.random() * 2 +1);
+        deadEnd = true;
+        
       }
     }
     if (direction == 3) {
       x -= 0.03;
       if (grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier) {
         x += 0.03;
-        direction -= (int) (Math.random() * 2 +1);
+        deadEnd = true;
+        
       }
     }
     if (direction == 4) {
       x += 0.03;
       if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
         x -= 0.03;
-        direction -= (int) (Math.random() * 3 +1);
+        deadEnd = true;
       }
     }
     x = constrain(x, 0, width - enemy.width);
