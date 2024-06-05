@@ -31,11 +31,12 @@ void setup() {
     for (int b = 1; b < grid[0].length-1; b++) {
       if (!(grid[a][b] instanceof Block)) {
         if (Math.random() > blockDensity) {
-          grid[a][b] = new BreakableBlock(a, b, false);
+          grid[a][b] = new BreakableBlock(a, b, false, "");
         }
       }
     }
   }
+  // creates enemies
   enemies = new ArrayList<>();
   for (int i = 0; i < 5; i++) {
     int randX = (int) (Math.random() * 22 +1);
@@ -46,26 +47,61 @@ void setup() {
     }
     enemies.add(new Enemy(randX, randY, 1));
   }
+  ArrayList<int[]> usedCoords = new ArrayList<>();
   // places exit in one breakable block
   boolean blockPlaced = false;
   while (!blockPlaced) {
     int r = (int) (Math.random() * rows);
     int c = (int) (Math.random() * cols);
     if (grid[r][c] instanceof BreakableBlock) {
-      grid[r][c] = new BreakableBlock(r, c, true); 
+      grid[r][c] = new BreakableBlock(r, c, true, "");
+      int[] coords = {r, c};
+      usedCoords.add(coords);
+      blockPlaced = true;
+    }
+  }
+  // places fireUp powerup in one breakable block
+  blockPlaced = false;
+  while (!blockPlaced) {
+    int r = (int) (Math.random() * rows);
+    int c = (int) (Math.random() * cols);
+    int[] coords = {r, c};
+    if (grid[r][c] instanceof BreakableBlock) {
+      for (int i = 0; i < usedCoords.size(); i++) {
+        if (coords.equals(usedCoords.get(i))) {
+          continue; 
+        }
+      }
+      grid[r][c] = new BreakableBlock(r, c, true, "f");
+      usedCoords.add(coords);
+      blockPlaced = true;
+    }
+  }
+  // places bombUp powerup in one breakable block
+  blockPlaced = false;
+  while (!blockPlaced) {
+    int r = (int) (Math.random() * rows);
+    int c = (int) (Math.random() * cols);
+    int[] coords = {r, c};
+    if (grid[r][c] instanceof BreakableBlock) {
+      for (int i = 0; i < usedCoords.size(); i++) {
+        if (coords.equals(usedCoords.get(i))) {
+          continue; 
+        }
+      }
+      grid[r][c] = new BreakableBlock(r, c, true, "b");
+      usedCoords.add(coords);
       blockPlaced = true;
     }
   }
 }
-  //enemies = new ArrayList<>();
 
 void draw() {
    background(0,126,41);
    player.updateGrid(grid);
    player.move();
    player.dropBomb();
-   image(player.getImage(), player.getX() * pixelsPerSquare, player.getY() * pixelsPerSquare); 
-   if (player.onExit()) {
+   if (player.onExit() && enemies.size() == 0) {
       noLoop(); // <------------------------------
    }
    if (onExplosion(player)) {
@@ -78,7 +114,7 @@ void draw() {
         grid[bomb.getX()][bomb.getY()] = bomb;
         bomb.tick();
         if (bomb.getTime() <= 0) {
-          detonate(bomb.getX(), bomb.getY(), 3);
+          detonate(bomb.getX(), bomb.getY(), 1);
           player.getBombs().remove(i); 
         }
      }
@@ -115,10 +151,11 @@ void draw() {
        i--;
      }
    }
+   image(player.getImage(), player.getX() * pixelsPerSquare, player.getY() * pixelsPerSquare); 
 }
 
 boolean playerOnEnemy(Player p, Enemy e) {
-  return (p.getX() < (e.getX() + 1) && (p.getX() + 1) > e.getX()) && (p.getY() < (e.getY() + 1) && (p.getY() + 1) > e.getY());
+  return (p.getX() + 0.1 < (e.getX() + 0.9) && (p.getX() + 0.9) > e.getX() + 0.1) && (p.getY() + 0.1 < (e.getY() + 0.9) && (p.getY() + 0.9) > e.getY() + 0.1);
 }
 boolean onExplosion(Enemy e) {
   return (grid[(int) (e.getX() + 0.1)][(int) (e.getY() + 0.1)] instanceof Explosion) || (grid[(int) (e.getX() + 0.1)][(int) (e.getY() + 0.9)] instanceof Explosion) || (grid[(int) (e.getX() + 0.9)][(int) (e.getY() + 0.1)] instanceof Explosion) || (grid[(int) (e.getX() + 0.9)][(int) (e.getY() + 0.9)] instanceof Explosion);
