@@ -45,30 +45,30 @@ public class Enemy {
   
   void move() {
     if (direction == 1) {
-      y -= 0.05;
+      y -= 0.03;
       if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
-        y += 0.05;
+        y += 0.03;
         direction += (int) (Math.random() * 3 +1);
       }
     }
     if (direction == 2) {
-      y += 0.05;
+      y += 0.03;
       if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {
-        y -= 0.05;
+        y -= 0.03;
         direction += (int) (Math.random() * 2 +1);
       }
     }
     if (direction == 3) {
-      x -= 0.05;
+      x -= 0.03;
       if (grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier) {
-        x += 0.05;
+        x += 0.03;
         direction -= (int) (Math.random() * 2 +1);
       }
     }
     if (direction == 4) {
-      x += 0.05;
+      x += 0.03;
       if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
-        x -= 0.05;
+        x -= 0.03;
         direction -= (int) (Math.random() * 3 +1);
       }
     }
