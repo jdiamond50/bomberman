@@ -31,4 +31,6 @@ public class Block implements Asset, Barrier {
   boolean hasExit() {
     return false;
   }
+  String getPowerUps () {return "";}
+  String getType() {return "";};
 }

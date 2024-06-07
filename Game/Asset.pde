@@ -3,4 +3,6 @@ interface Asset {
    public float getTime();
    public void tick();
    boolean hasExit();
+   String getPowerUps();
+   String getType();
 }

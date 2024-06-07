@@ -36,4 +36,6 @@ public class Explosion implements Asset {
   boolean hasExit() {
     return false;
   }
+  String getPowerUps () {return "";}
+  String getType() {return "";}
 }

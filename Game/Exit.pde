@@ -18,4 +18,6 @@ public class Exit implements Asset {
   public float getTime() {return 0.0;}
   public void tick() {}
   boolean hasExit() {return false;}
+  String getPowerUps () {return "";}
+  String getType() {return "";}
 }
