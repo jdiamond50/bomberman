@@ -10,6 +10,7 @@ public class Player implements Asset {
   private boolean bombJustDropped;
   private int bombRadius;
   private int numBombs;
+  private float speed;
   
   public Player(float x, float y) {
     this.x = x;
@@ -23,6 +24,7 @@ public class Player implements Asset {
     bombJustDropped = false;
     bombRadius = 1;
     numBombs = 1;
+    speed = 0.05;
   }
   
   float getX() {
@@ -77,6 +79,8 @@ public class Player implements Asset {
       bombRadius += 2;
     } else if (type.equals("b")) {
       numBombs++;
+    } else if (type.equals("s")) {
+      speed += 0.02;
     }
   }
   int getBombRadius() {
@@ -102,45 +106,45 @@ public class Player implements Asset {
        bombJustDropped = false; 
     }
     if (up) {
-      y -= 0.05;
-      if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
-        y += 0.05;
+      y -= speed;
+      if (grid[(int) (x + speed)][(int) y] instanceof Barrier || grid[(int) (x + 1 - speed)][(int) y] instanceof Barrier) {
+        y += speed;
         if (bombJustDropped) {
-          if (!(grid[(int) (x + 0.55)][(int) y] instanceof Block) && !(grid[(int) (x + 0.95)][(int) y] instanceof Block)) {
-            y -= 0.05; 
+          if (!(grid[(int) (x + speed)][(int) y] instanceof Block) && !(grid[(int) (x + 1 - speed)][(int) y] instanceof Block)) {
+            y -= speed; 
           }
         }
       }
     }
     if (down) {
-      y += 0.05;
-      if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {
-        y -= 0.05;
+      y += speed;
+      if (grid[(int) (x + speed)][(int) y + 1] instanceof Barrier || grid[(int) (x + 1 - speed)][(int) y + 1] instanceof Barrier) {
+        y -= speed;
         if (bombJustDropped) {
-          if (!(grid[(int) (x + 0.05)][(int) y + 1] instanceof Block) && !(grid[(int) (x + 0.95)][(int) y + 1] instanceof Block)) {
-            y += 0.05;
+          if (!(grid[(int) (x + speed)][(int) y + 1] instanceof Block) && !(grid[(int) (x + 1 - speed)][(int) y + 1] instanceof Block)) {
+            y += speed;
           }
         }
       }
     }
     if (left) {
-      x -= 0.05;
-      if (grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier) {
-        x += 0.05;
+      x -= speed;
+      if (grid[(int) x][(int) (y + speed)] instanceof Barrier || grid[(int) x][(int) (y + 1 - speed)] instanceof Barrier) {
+        x += speed;
         if (bombJustDropped) {
-          if (!(grid[(int) x][(int) (y + 0.05)] instanceof Block) && !(grid[(int) x][(int) (y + 0.95)] instanceof Block)) {
-             x -= 0.05; 
+          if (!(grid[(int) x][(int) (y + speed)] instanceof Block) && !(grid[(int) x][(int) (y + 1 - speed)] instanceof Block)) {
+             x -= speed; 
           }
         }
       }
     }
     if (right) {
-      x += 0.05;
-      if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
-        x -= 0.05;
+      x += speed;
+      if (grid[(int) x + 1][(int) (y + speed)] instanceof Barrier || grid[(int) x + 1][(int) (y + 1 - speed)] instanceof Barrier) {
+        x -= speed;
         if (bombJustDropped) {
-           if (!(grid[(int) x + 1][(int) (y + 0.05)] instanceof Block) && !(grid[(int) x + 1][(int) (y + 0.95)] instanceof Block)) {
-              x += 0.05; 
+           if (!(grid[(int) x + 1][(int) (y + speed)] instanceof Block) && !(grid[(int) x + 1][(int) (y + 1 - speed)] instanceof Block)) {
+              x += speed; 
            }
         }
       }

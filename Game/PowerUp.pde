@@ -14,6 +14,11 @@ public class PowerUp implements Asset {
       image.resize(32,32);
       image.get(16,0,16,16);
       image.resize(50,50);
+    } else if (type.equals("s")) {
+      image = loadImage("speedUp.png");
+      image.resize(32,32);
+      image.get(16,0,16,16);
+      image.resize(50,50);
     }
   }
   

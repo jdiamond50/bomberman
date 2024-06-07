@@ -55,12 +55,14 @@ void setup() {
     int c = (int) (Math.random() * cols);
     if (grid[r][c] instanceof BreakableBlock) {
       grid[r][c] = new BreakableBlock(r, c, true, "");
+      System.out.println("eixt placed at (" + r + ", " + c + ")");
       int[] coords = {r, c};
       usedCoords.add(coords);
       blockPlaced = true;
     }
   }
   // places fireUp powerup in one breakable block
+  System.out.println("after exit: " + usedCoords.toString());
   blockPlaced = false;
   while (!blockPlaced) {
     int r = (int) (Math.random() * rows);
@@ -73,11 +75,13 @@ void setup() {
         }
       }
       grid[r][c] = new BreakableBlock(r, c, false, "f");
+      System.out.println("fireUp placed at (" + r + ", " + c + ")");
       usedCoords.add(coords);
       blockPlaced = true;
     }
   }
   // places bombUp powerup in one breakable block
+  System.out.println("after fireUp: " + usedCoords.toString());
   blockPlaced = false;
   while (!blockPlaced) {
     int r = (int) (Math.random() * rows);
@@ -90,6 +94,26 @@ void setup() {
         }
       }
       grid[r][c] = new BreakableBlock(r, c, false, "b");
+      System.out.println("bombUp placed at (" + r + ", " + c + ")");
+      usedCoords.add(coords);
+      blockPlaced = true;
+    }
+  }
+  // places speedUp powerup in one breakable block
+  blockPlaced = false;
+  System.out.println("after bombUp: " + usedCoords.toString());
+  while (!blockPlaced) {
+    int r = (int) (Math.random() * rows);
+    int c = (int) (Math.random() * cols);
+    int[] coords = {r, c};
+    if (grid[r][c] instanceof BreakableBlock) {
+      for (int i = 0; i < usedCoords.size(); i++) {
+        if (coords.equals(usedCoords.get(i))) {
+          continue; 
+        }
+      }
+      grid[r][c] = new BreakableBlock(r, c, false, "s");
+      System.out.println("speedUp placed at (" + r + ", " + c + ")");
       usedCoords.add(coords);
       blockPlaced = true;
     }
