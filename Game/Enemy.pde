@@ -8,6 +8,8 @@ public class Enemy {
   private int direction;
   private int moveTime;
   private int time;
+  private boolean deadEnd;
+  private int deadEndTime;
   
   public Enemy(float x, float y, int diff) {
     enemy = loadImage("enemy1.png");
@@ -19,6 +21,8 @@ public class Enemy {
     direction = 1;
     moveTime = 0;
     time = 0;
+    deadEnd = false;
+    deadEndTime = 0;
   }
   
   float getX() {
@@ -44,22 +48,26 @@ public class Enemy {
   }
   
   void move() {
-    boolean deadEnd = false;
-    int deadEndTime = 0;
     if (deadEnd) {
       deadEndTime++;
-      if (deadEndTime >= 60) {
+      if (deadEndTime >= 90) {
         deadEnd = false;
         deadEndTime = 0;
-        if (!(grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier)) {
-          direction = 1;
-        } else if (!(grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier)) {
-          direction = 2;
-        } else if (!(grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier)) {
-          direction = 3;
-        } else if (!(grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier)) {
-          direction = 4;
+        while (true) {
+          direction = (int) (Math.random() * 4 + 1);
+          if (direction == 1 && !(grid[(int) (x + 0.05)][(int) y - 1] instanceof Barrier) && !(grid[(int) (x + 0.95)][(int) y - 1] instanceof Barrier)) {
+            break;
+          } else if (direction == 2 && !(grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier) && !(grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier)) {
+            break;
+          } else if (direction == 3 && !(grid[(int) x - 1][(int) (y + 0.05)] instanceof Barrier) && !(grid[(int) x - 1][(int) (y + 0.95)] instanceof Barrier)) {
+            break;
+          } else if (direction == 4 && !(grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier) && !(grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier)) {
+            break;
+          }
         }
+      }
+      else {
+        return;
       }
     }
     
@@ -99,8 +107,19 @@ public class Enemy {
     
     time++;
     if (time >= moveTime) {
-      moveTime = (int) (Math.random()* 181 + 240);;
-      direction = (int) (Math.random() * 4 + 1);
+      moveTime = (int) (Math.random()* 181 + 240);
+      while (true) {
+          direction = (int) (Math.random() * 4 + 1);
+          if (direction == 1 && !(grid[(int) (x + 0.05)][(int) y - 1] instanceof Barrier) && !(grid[(int) (x + 0.95)][(int) y - 1] instanceof Barrier)) {
+            break;
+          } else if (direction == 2 && !(grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier) && !(grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier)) {
+            break;
+          } else if (direction == 3 && !(grid[(int) x - 1][(int) (y + 0.05)] instanceof Barrier) && !(grid[(int) x - 1][(int) (y + 0.95)] instanceof Barrier)) {
+            break;
+          } else if (direction == 4 && !(grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier) && !(grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier)) {
+            break;
+          }
+      }
       time = 0;
     }
   }
