@@ -5,11 +5,21 @@ int rows = 25;
 int cols = 17;
 float blockDensity = 0.9;
 int pixelsPerSquare = 50;
+int score = 0;
+int timeLeft = 200;
+int time = 0;
+boolean gameOver = false;
+PImage winScreen;
+PImage loseScreen;
+
 
 void setup() {
   size(1250,850);
   grid = new Asset[rows][cols];
   player = new Player(5,5);
+  textSize(32);
+  winScreen = loadImage("win.jpg");
+  loseScreen = loadImage("lose.PNG");
   // fills border with blocks
   for (int i = 0; i < grid.length; i++) {
     for (int j = 0; j < grid[0].length; j++) {
@@ -38,7 +48,7 @@ void setup() {
   }
   // creates enemies
   enemies = new ArrayList<>();
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 10; i++) {
     int randX = (int) (Math.random() * 22 +1);
     int randY = (int) (Math.random() * 14 + 1);
     while (grid[randX][randY] instanceof Block || grid[randX][randY] instanceof BreakableBlock) {
@@ -126,10 +136,22 @@ void draw() {
    player.move();
    player.dropBomb();
    if (player.onExit() && enemies.size() == 0) {
-      noLoop(); // <------------------------------
+      background(0);
+      image(winScreen, 0, 0, width, height);
+      noLoop();
+      return;  
    }
    if (onExplosion(player)) {
-     noLoop(); // <------------------------------
+     background(0);
+     image(loseScreen, 0, 0, width, height);
+     noLoop();
+     return;
+   }
+   if (timeLeft <= 0) {
+     background(0);
+     image(loseScreen, 0, 0, width, height);
+     noLoop();
+     return;
    }
    if (player.onPowerUp()) {
      player.addPowerUp(grid[(int) (player.getX() + 0.5)][(int) (player.getY() + 0.5)].getType());
@@ -172,14 +194,26 @@ void draw() {
      enemy.updateGrid(grid);
      enemy.move();
      if (playerOnEnemy(player, enemy)) {
+        background(0);
+       image(loseScreen, 0, 0, width, height);
        noLoop(); 
+       return;
      }
      if (onExplosion(enemy)) {
        enemies.remove(enemy); 
        i--;
+       score += 100;
      }
    }
    image(player.getImage(), player.getX() * pixelsPerSquare, player.getY() * pixelsPerSquare); 
+   fill(0);
+   text("Score: " + score, 100, 35);
+   text("Time Left: " + timeLeft, 350, 35);
+   time++;
+   if (time >= 60) {
+     timeLeft--;
+     time = 0;
+  }
 }
 
 boolean playerOnEnemy(Player p, Enemy e) {
