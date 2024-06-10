@@ -247,13 +247,16 @@ void detonate(int x, int y, int strength ) {
         }
         break;
      }
-     if (grid[r][y] instanceof Block) {
+     if (grid[r][y] instanceof Block || grid[r][y] instanceof Exit || grid[r][y] instanceof PowerUp) {
         break; 
+     } else if (grid[r][y] instanceof Explosion) {
+       continue;
      }
      if (grid[r][y] instanceof Bomb) {
        detonate(r, y, player.getBombRadius());
        System.out.println("detonated bomb");
        player.clearBombs();
+       break;
      }
      if (r == x + strength) {
        grid[r][y] = new Explosion("rightEnd");
@@ -273,13 +276,16 @@ void detonate(int x, int y, int strength ) {
         }
         break;
      }
-     if (grid[r][y] instanceof Block) {
+     if (grid[r][y] instanceof Block || grid[r][y] instanceof Exit || grid[r][y] instanceof PowerUp) {
         break; 
+     } else if (grid[r][y] instanceof Explosion) {
+       continue;
      }
      if (grid[r][y] instanceof Bomb) {
        detonate(r, y, player.getBombRadius());
        System.out.println("detonated bomb");
        player.clearBombs();
+       break;
      }
      if (r == x - strength) {
         grid[r][y] = new Explosion("leftEnd");
@@ -299,13 +305,16 @@ void detonate(int x, int y, int strength ) {
         }
         break;
      }
-     if (grid[x][c] instanceof Block) {
+     if (grid[x][c] instanceof Block || grid[x][c] instanceof Exit || grid[x][c] instanceof PowerUp) {
         break;
+     } else if (grid[x][c] instanceof Explosion) {
+       continue;
      }
      if (grid[x][c] instanceof Bomb) {
        detonate(x, c, player.getBombRadius());
        System.out.println("detonated bomb");
        player.clearBombs();
+       break;
      }
      if (c == y + strength) {
         grid[x][c] = new Explosion("bottomEnd"); 
@@ -325,13 +334,16 @@ void detonate(int x, int y, int strength ) {
         }
         break;
      }
-     if (grid[x][c] instanceof Block) {
+     if (grid[x][c] instanceof Block || grid[x][c] instanceof Exit || grid[x][c] instanceof PowerUp) {
         break;
+     } else if (grid[x][c] instanceof Explosion) {
+       continue;
      }
      if (grid[x][c] instanceof Bomb) {
        detonate(x, c, player.getBombRadius());
        System.out.println("detonated bomb");
        player.clearBombs();
+       break;
      }
      if (c == y - strength) {
         grid[x][c] = new Explosion("topEnd"); 
