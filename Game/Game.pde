@@ -48,7 +48,7 @@ void setup() {
   }
   // creates enemies
   enemies = new ArrayList<>();
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 5; i++) {
     int randX = (int) (Math.random() * 22 +1);
     int randY = (int) (Math.random() * 14 + 1);
     while (grid[randX][randY] instanceof Block || grid[randX][randY] instanceof BreakableBlock) {
@@ -56,6 +56,9 @@ void setup() {
       randY = (int) (Math.random() * 14 + 1);
     }
     enemies.add(new Enemy(randX, randY, 1));
+    if (i % 2 == 0) {
+      enemies.add(new Enemy(randX, randY, 2));
+    }
   }
   ArrayList<int[]> usedCoords = new ArrayList<>();
   // places exit in one breakable block
@@ -202,7 +205,7 @@ void draw() {
      if (onExplosion(enemy)) {
        enemies.remove(enemy); 
        i--;
-       score += 100;
+       score += enemy.getPoints();
      }
    }
    image(player.getImage(), player.getX() * pixelsPerSquare, player.getY() * pixelsPerSquare); 

@@ -2,6 +2,7 @@ public class Enemy {
   private PImage enemy;
   private float x;
   private float y;
+  private float speed;
   private int points;
   private Asset[][] grid;
   private int difficulty;
@@ -12,12 +13,19 @@ public class Enemy {
   private int deadEndTime;
   
   public Enemy(float x, float y, int diff) {
-    enemy = loadImage("enemy1.png");
-    enemy.resize(50, 50);
     this.x = x;
     this.y = y;
     difficulty = diff;
-    points = 100; //can add higher difficulty enemies with more points later
+    if (difficulty == 1) {
+      points = 100; 
+      speed = 0.03;
+      enemy = loadImage("enemy1.png");
+    } else if (difficulty == 2) {
+      points = 400;
+      speed = 0.06;
+      enemy = loadImage("enemy2.png");
+    }
+    enemy.resize(50, 50);
     direction = 1;
     moveTime = 0;
     time = 0;
@@ -31,11 +39,17 @@ public class Enemy {
   float getY() {
     return y;
   }
+  int getDiff() {
+    return difficulty;
+  }
   void setX(int x) {
     this.x = x;
   }
   void setY(int y) {
     this.y = y;
+  }
+  void setDiff(int diff) {
+    this.difficulty = diff;
   }
   void updateGrid(Asset[][] grid) {
     this.grid = grid;
@@ -50,7 +64,7 @@ public class Enemy {
   void move() {
     if (deadEnd) {
       deadEndTime++;
-      if (deadEndTime >= 90) {
+      if (deadEndTime >= 75) {
         deadEnd = false;
         deadEndTime = 0;
         while (true) {
@@ -66,39 +80,36 @@ public class Enemy {
           }
         }
       }
-      else {
-        return;
-      }
     }
     
     if (direction == 1) {
-      y -= 0.03;
+      y -= speed;
       if (grid[(int) (x + 0.05)][(int) y] instanceof Barrier || grid[(int) (x + 0.95)][(int) y] instanceof Barrier) {
-        y += 0.03;
+        y += speed;
         deadEnd = true;
         
       }
     }
     if (direction == 2) {
-      y += 0.03;
+      y += speed;
       if (grid[(int) (x + 0.05)][(int) y + 1] instanceof Barrier || grid[(int) (x + 0.95)][(int) y + 1] instanceof Barrier) {
-        y -= 0.03;
+        y -= speed;
         deadEnd = true;
         
       }
     }
     if (direction == 3) {
-      x -= 0.03;
+      x -= speed;
       if (grid[(int) x][(int) (y + 0.05)] instanceof Barrier || grid[(int) x][(int) (y + 0.95)] instanceof Barrier) {
-        x += 0.03;
+        x += speed;
         deadEnd = true;
         
       }
     }
     if (direction == 4) {
-      x += 0.03;
+      x += speed;
       if (grid[(int) x + 1][(int) (y + 0.05)] instanceof Barrier || grid[(int) x + 1][(int) (y + 0.95)] instanceof Barrier) {
-        x -= 0.03;
+        x -= speed;
         deadEnd = true;
       }
     }
