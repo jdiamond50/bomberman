@@ -94,6 +94,9 @@ public class Player implements Asset {
   void dropBomb() {
     if (keyPressed && keyCode == SHIFT && bombs.size() < numBombs)
     {
+      if (grid[(int) (x + 0.5)][(int) (y + 0.5)] instanceof PowerUp || grid[(int) (x + 0.5)][(int) (y + 0.5)] instanceof Exit) {
+        return;
+      }
       if (!(grid[(int) (x + 0.5)][(int) (y + 0.5)] instanceof Bomb)) {
         bombs.add(new Bomb((int) (x + 0.5),(int) (y + 0.5)));
       }
