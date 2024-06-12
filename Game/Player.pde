@@ -51,6 +51,16 @@ public class Player implements Asset {
   int getScore() {
     return score;
   }
+  String getPowerUps () {
+    return powerUps;
+  }
+  int getBombRadius() {
+    return bombRadius;
+  }
+  int getNumBombs() {
+    return numBombs;
+  }
+  
   boolean onBomb() {
      return grid[(int) x][(int) y] instanceof Bomb || grid[(int) x + 1][(int) y] instanceof Bomb || grid[(int) x][(int) y + 1] instanceof Bomb || grid[(int) x + 1][(int) y + 1] instanceof Bomb;
   }
@@ -60,18 +70,13 @@ public class Player implements Asset {
   boolean onPowerUp() {
     return grid[(int) (x + 0.1)][(int) (y + 0.1)] instanceof PowerUp && grid[(int) (x + 0.9)][(int) (y + 0.1)] instanceof PowerUp && grid[(int) (x + 0.1)][(int) (y + 0.9)] instanceof PowerUp && grid[(int) (x + 0.9)][(int) (y + 0.9)] instanceof PowerUp;
   }
-  float getTime() {return 0.0;}
-  public void tick() {}
-  boolean hasExit() {return false;}
-  String getType() {return "";}
-  String getPowerUps () {
-    return powerUps;
-  }
+  
   void clearBombs() {
     while (bombs.size() > 0) {
       bombs.remove(0);
     }
   }
+  
   void addPowerUp(String type) {
     powerUps += type;
     //System.out.println("added powerUp: " + type);
@@ -83,17 +88,13 @@ public class Player implements Asset {
       speed += 0.02;
     }
   }
-  int getBombRadius() {
-    return bombRadius;
-  }
-  int getNumBombs() {
-    return numBombs;
-  }
 
-  
   void dropBomb() {
     if (keyPressed && keyCode == SHIFT && bombs.size() < numBombs)
     {
+      if (grid[(int) (x + 0.5)][(int) (y + 0.5)] instanceof PowerUp || grid[(int) (x + 0.5)][(int) (y + 0.5)] instanceof Exit) {
+        return;
+      }
       if (!(grid[(int) (x + 0.5)][(int) (y + 0.5)] instanceof Bomb)) {
         bombs.add(new Bomb((int) (x + 0.5),(int) (y + 0.5)));
       }
@@ -183,9 +184,13 @@ public class Player implements Asset {
     }
   }
     
-  
   void display() {
     image(player, x, y);
   }
+  
+  float getTime() {return 0.0;}
+  public void tick() {}
+  boolean hasExit() {return false;}
+  String getType() {return "";}
 }
         

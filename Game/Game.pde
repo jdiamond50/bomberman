@@ -12,7 +12,6 @@ boolean gameOver = false;
 PImage winScreen;
 PImage loseScreen;
 
-
 void setup() {
   size(1250,850);
   grid = new Asset[rows][cols];
@@ -68,7 +67,6 @@ void setup() {
     int c = (int) (Math.random() * cols);
     if (grid[r][c] instanceof BreakableBlock) {
       grid[r][c] = new BreakableBlock(r, c, true, "");
-      System.out.println("eixt placed at (" + r + ", " + c + ")");
       int[] coords = {r, c};
       usedCoords.add(coords);
       blockPlaced = true;
@@ -161,16 +159,13 @@ void draw() {
      grid[(int) (player.getX() + 0.5)][(int) (player.getY() + 0.5)] = null;
    }
    for (int i = 0; i < player.getBombs().size(); i++) {
-     Bomb bomb = player.getBombs().get(i);
-     if (bomb.getTime() > 0) {
-        //image(bomb.getImage(), bomb.getX() * 50, bomb.getY() * 50);
-        grid[bomb.getX()][bomb.getY()] = bomb;
-        bomb.tick();
-        if (bomb.getTime() <= 0) {
-          player.getBombs().remove(i); 
-          detonate(bomb.getX(), bomb.getY(), player.getBombRadius());
-        }
-     }
+      Bomb bomb = player.getBombs().get(i);//image(bomb.getImage(), bomb.getX() * 50, bomb.getY() * 50);
+      grid[bomb.getX()][bomb.getY()] = bomb;
+      bomb.tick();
+      if (bomb.getTime() <= 0) {
+        player.getBombs().remove(i); 
+        detonate(bomb.getX(), bomb.getY(), player.getBombRadius());
+      }
    }
    for (int r = 0; r < grid.length; r++) {
       for (int c = 0; c < grid[0].length; c++) {
@@ -250,13 +245,15 @@ void detonate(int x, int y, int strength ) {
         }
         break;
      }
-     if (grid[r][y] instanceof Block) {
+     if (grid[r][y] instanceof Block || grid[r][y] instanceof Exit || grid[r][y] instanceof PowerUp) {
         break; 
+     } else if (grid[r][y] instanceof Explosion) {
+       continue;
      }
      if (grid[r][y] instanceof Bomb) {
        detonate(r, y, player.getBombRadius());
-       System.out.println("detonated bomb");
        player.clearBombs();
+       break;
      }
      if (r == x + strength) {
        grid[r][y] = new Explosion("rightEnd");
@@ -276,13 +273,16 @@ void detonate(int x, int y, int strength ) {
         }
         break;
      }
-     if (grid[r][y] instanceof Block) {
-        break; 
+     if (grid[r][y] instanceof Block || grid[r][y] instanceof Exit || grid[r][y] instanceof PowerUp) {
+        break;
+     } else if (grid[r][y] instanceof Explosion) {
+       continue;
      }
      if (grid[r][y] instanceof Bomb) {
        detonate(r, y, player.getBombRadius());
        System.out.println("detonated bomb");
        player.clearBombs();
+       break;
      }
      if (r == x - strength) {
         grid[r][y] = new Explosion("leftEnd");
@@ -302,13 +302,16 @@ void detonate(int x, int y, int strength ) {
         }
         break;
      }
-     if (grid[x][c] instanceof Block) {
+     if (grid[x][c] instanceof Block || grid[x][c] instanceof Exit || grid[x][c] instanceof PowerUp) {
         break;
+     } else if (grid[x][c] instanceof Explosion) {
+       continue;
      }
      if (grid[x][c] instanceof Bomb) {
        detonate(x, c, player.getBombRadius());
        System.out.println("detonated bomb");
        player.clearBombs();
+       break;
      }
      if (c == y + strength) {
         grid[x][c] = new Explosion("bottomEnd"); 
@@ -328,13 +331,16 @@ void detonate(int x, int y, int strength ) {
         }
         break;
      }
-     if (grid[x][c] instanceof Block) {
+     if (grid[x][c] instanceof Block || grid[x][c] instanceof Exit || grid[x][c] instanceof PowerUp) {
         break;
+     } else if (grid[x][c] instanceof Explosion) {
+       continue;
      }
      if (grid[x][c] instanceof Bomb) {
        detonate(x, c, player.getBombRadius());
        System.out.println("detonated bomb");
        player.clearBombs();
+       break;
      }
      if (c == y - strength) {
         grid[x][c] = new Explosion("topEnd"); 

@@ -15,6 +15,7 @@ public class Exit implements Asset {
   public PImage getImage() {
     return exitImage; 
   }
+  
   public float getTime() {return 0.0;}
   public void tick() {}
   boolean hasExit() {return false;}

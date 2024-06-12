@@ -1,16 +1,16 @@
 public class Enemy {
-  private PImage enemy;
+  private PImage image;
   private float x;
   private float y;
   private float speed;
   private int points;
   private Asset[][] grid;
-  private int difficulty;
   private int direction;
   private int moveTime;
   private int time;
   private boolean deadEnd;
   private int deadEndTime;
+  private int difficulty;
   
   public Enemy(float x, float y, int diff) {
     this.x = x;
@@ -19,13 +19,13 @@ public class Enemy {
     if (difficulty == 1) {
       points = 100; 
       speed = 0.03;
-      enemy = loadImage("enemy1.png");
+      image = loadImage("enemy1.png");
     } else if (difficulty == 2) {
       points = 400;
       speed = 0.06;
-      enemy = loadImage("enemy2.png");
+      image = loadImage("enemy2.png");
     }
-    enemy.resize(50, 50);
+    image.resize(50, 50);
     direction = 1;
     moveTime = 0;
     time = 0;
@@ -55,7 +55,7 @@ public class Enemy {
     this.grid = grid;
   }
   PImage getImage() {
-    return enemy;
+    return image;
   }
   int getPoints() {
     return points;
@@ -113,8 +113,8 @@ public class Enemy {
         deadEnd = true;
       }
     }
-    x = constrain(x, 0, width - enemy.width);
-    y = constrain(y, 0, height - enemy.height);
+    x = constrain(x, 0, width - image.width);
+    y = constrain(y, 0, height - image.height);
     
     time++;
     if (time >= moveTime) {
@@ -136,7 +136,7 @@ public class Enemy {
   }
   
   void display() {
-    image(enemy, x*50, y*50);
+    image(image, x*50, y*50);
   }
 }
     

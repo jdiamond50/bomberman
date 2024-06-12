@@ -1,10 +1,12 @@
 public class Explosion implements Asset {
   private PImage explosionImage;
   private float timeLeft;
+  private String type;
   
   Explosion(String type) {
     explosionImage = loadImage("sprites.png");
     timeLeft = 0.5;
+    this.type = type;
     if (type.equals("mid")) {
        explosionImage = explosionImage.get(379,512,16,16);
     } else if (type.equals("leftEnd")) {
@@ -29,13 +31,13 @@ public class Explosion implements Asset {
   float getTime() {
     return timeLeft;
   }
-  
   void tick() {
     timeLeft -= 0.015;
   }
-  boolean hasExit() {
-    return false;
+  String getType() {
+    return type;
   }
+  
+  boolean hasExit() {return false;}
   String getPowerUps () {return "";}
-  String getType() {return "";}
 }
