@@ -28,9 +28,7 @@ public class Block implements Asset, Barrier {
     image(blockImage, x, y);
   }
   
-  boolean hasExit() {
-    return false;
-  }
+  boolean hasExit() {return false;}
   String getPowerUps () {return "";}
   String getType() {return "";};
 }

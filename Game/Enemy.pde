@@ -4,7 +4,6 @@ public class Enemy {
   private float y;
   private int points;
   private Asset[][] grid;
-  private int difficulty;
   private int direction;
   private int moveTime;
   private int time;
@@ -16,7 +15,6 @@ public class Enemy {
     image.resize(50, 50);
     this.x = x;
     this.y = y;
-    difficulty = diff;
     points = 100; //can add higher difficulty enemies with more points later
     direction = 1;
     moveTime = 0;

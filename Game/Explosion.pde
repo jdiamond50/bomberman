@@ -31,15 +31,13 @@ public class Explosion implements Asset {
   float getTime() {
     return timeLeft;
   }
-  
   void tick() {
     timeLeft -= 0.015;
   }
-  boolean hasExit() {
-    return false;
-  }
-  String getPowerUps () {return "";}
   String getType() {
     return type;
   }
+  
+  boolean hasExit() {return false;}
+  String getPowerUps () {return "";}
 }

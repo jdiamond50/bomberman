@@ -10,7 +10,7 @@ public class BreakableBlock extends Block {
     breakableBlock = breakableBlock.get(163,46,15,15); 
     breakableBlock.resize(50,50); 
     if (hasExit == true) {
-      breakableBlock.resize(30,30); // temporary size change to indicate where it is 
+      breakableBlock.resize(50,50); // temporary size change to indicate where it is 
     }
     this.hasExit = hasExit;
     this.powerUps = powerUps;

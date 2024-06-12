@@ -27,9 +27,8 @@ public class Bomb implements Asset, Barrier {
   int getY() {
     return y; 
   }
-  boolean hasExit() {
-    return false;
-  }
+  
+  boolean hasExit() {return false;}
   String getPowerUps () {return "";}
   String getType() {return "";}
 }

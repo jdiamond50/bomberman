@@ -48,7 +48,7 @@ void setup() {
   }
   // creates enemies
   enemies = new ArrayList<>();
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 25; i++) {
     int randX = (int) (Math.random() * 22 +1);
     int randY = (int) (Math.random() * 14 + 1);
     while (grid[randX][randY] instanceof Block || grid[randX][randY] instanceof BreakableBlock) {
